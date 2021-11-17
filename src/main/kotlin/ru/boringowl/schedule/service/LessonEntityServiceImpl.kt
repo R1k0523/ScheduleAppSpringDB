@@ -15,7 +15,23 @@ import java.util.*
 class LessonEntityServiceImpl : LessonEntityService {
     @Autowired
     private val lessonentityRepository: LessonEntityRepository? = null
+    @Autowired
+    private val groupTableEntityService: GroupTableEntityServiceImpl? = null
+    @Autowired
+    private val tutorEntityServiceImpl: TutorEntityServiceImpl? = null
+    @Autowired
+    private val subjectEntityServiceImpl: SubjectEntityServiceImpl? = null
+    @Autowired
+    private val classroomEntityServiceImpl: ClassroomEntityServiceImpl? = null
+    @Autowired
+    private val intervalTableEntityServiceImpl: IntervalTableEntityServiceImpl? = null
+
     override fun save(lessonentity: LessonEntity): LessonEntity {
+        lessonentity.group = groupTableEntityService!!.save(lessonentity.group!!)
+        lessonentity.tutor = tutorEntityServiceImpl!!.save(lessonentity.tutor!!)
+        lessonentity.subject = subjectEntityServiceImpl!!.save(lessonentity.subject!!)
+        lessonentity.classroom = classroomEntityServiceImpl!!.save(lessonentity.classroom!!)
+        lessonentity.interval = intervalTableEntityServiceImpl!!.save(lessonentity.interval!!)
         return lessonentityRepository!!.save(lessonentity)
     }
 

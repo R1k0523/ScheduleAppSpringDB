@@ -4,7 +4,7 @@ import ru.boringowl.schedule.entities.UsersEntity
 import javax.persistence.*
 
 @Entity
-@Table(name = "userrole")
+@Table(name = "userrole", uniqueConstraints=[javax.persistence.UniqueConstraint(columnNames = ["userrole_name"])])
 class UserRoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,7 +14,7 @@ class UserRoleEntity {
     @Column(name = "userrole_name", nullable = false)
     var userRoleName: String? = null
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     var credentials: List<CredentialEntity>? = null
 }
 

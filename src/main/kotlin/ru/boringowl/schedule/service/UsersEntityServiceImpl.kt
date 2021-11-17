@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import ru.boringowl.schedule.entities.UsersEntity
+import ru.boringowl.schedule.repo.UserRoleEntityRepository
 import ru.boringowl.schedule.repo.UsersEntityRepository
 
 import java.util.*
@@ -14,7 +15,13 @@ import java.util.*
 class UsersEntityServiceImpl : UsersEntityService {
     @Autowired
     private val usersentityRepository: UsersEntityRepository? = null
+    @Autowired
+    private val userRoleEntityServiceImpl: UserRoleEntityServiceImpl? = null
+
     override fun save(usersentity: UsersEntity): UsersEntity {
+        usersentity.roles?.forEach {
+            userRoleEntityServiceImpl?.save(it)
+        }
         return usersentityRepository!!.save(usersentity)
     }
 

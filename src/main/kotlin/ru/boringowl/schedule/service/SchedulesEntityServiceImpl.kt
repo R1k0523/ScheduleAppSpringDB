@@ -15,8 +15,17 @@ import java.util.*
 class SchedulesEntityServiceImpl : SchedulesEntityService {
     @Autowired
     private val schedulesentityRepository: SchedulesEntityRepository? = null
+    @Autowired
+    private val lessonEntityServiceImpl: LessonEntityServiceImpl? = null
     override fun save(schedulesentity: SchedulesEntity): SchedulesEntity {
+        schedulesentity.lessons!!.forEach {
+            lessonEntityServiceImpl!!.save(it)
+        }
         return schedulesentityRepository!!.save(schedulesentity)
+    }
+
+    override fun findByGroupName(groupName: String): Optional<SchedulesEntity> {
+        return schedulesentityRepository!!.findFirstBySchedulesNameEndsWith(groupName)
     }
 
     override fun find(id: Long): Optional<SchedulesEntity?> {

@@ -15,6 +15,16 @@ class ClassroomEntityServiceImpl : ClassroomEntityService {
     @Autowired
     private val classroomentityRepository: ClassroomEntityRepository? = null
     override fun save(classroomentity: ClassroomEntity): ClassroomEntity {
+        val classroom = classroomentity.classroomName?.let {
+            classroomentityRepository!!.findClassroomEntityByClassroomName(
+                it
+            )
+        }
+        if (classroom != null) {
+            if (classroom.isPresent) {
+                classroomentity.classroomId = classroom.get().classroomId
+            }
+        }
         return classroomentityRepository!!.save(classroomentity)
     }
 

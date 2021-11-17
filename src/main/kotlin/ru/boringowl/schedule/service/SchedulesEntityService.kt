@@ -19,4 +19,5 @@ interface SchedulesEntityService {
     fun delete(schedulesentity: SchedulesEntity)
     fun deleteAll()
     fun count(): Long
+    fun findByGroupName(groupName: String): Optional<SchedulesEntity>
 }

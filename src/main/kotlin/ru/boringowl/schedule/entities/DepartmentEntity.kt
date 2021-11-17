@@ -3,7 +3,7 @@ package ru.boringowl.schedule.entities
 import javax.persistence.*
 
 @Entity
-@Table(name = "department")
+@Table(name = "department", uniqueConstraints=[javax.persistence.UniqueConstraint(columnNames = ["department_name"])])
 class DepartmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,7 +13,7 @@ class DepartmentEntity {
     @Column(name = "department_name", nullable = false)
     var departmentName: String? = null
 
-    @OneToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.MERGE])
     var campus: CampusEntity? = null
 }
 

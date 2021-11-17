@@ -16,6 +16,17 @@ class PositionsEntityServiceImpl : PositionsEntityService {
     @Autowired
     private val positionsentityRepository: PositionsEntityRepository? = null
     override fun save(positionsentity: PositionsEntity): PositionsEntity {
+        val position =
+            positionsentity.positionsName?.let {
+                positionsentityRepository!!.findPositionsEntityByPositionsName(
+                    it
+                )
+            }
+        if (position != null) {
+            if (position.isPresent) {
+                positionsentity.positionsId = position.get().positionsId
+            }
+        }
         return positionsentityRepository!!.save(positionsentity)
     }
 

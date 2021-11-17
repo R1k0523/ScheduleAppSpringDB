@@ -3,7 +3,7 @@ package ru.boringowl.schedule.entities
 import javax.persistence.*
 
 @Entity
-@Table(name = "subject")
+@Table(name = "subject", uniqueConstraints=[javax.persistence.UniqueConstraint(columnNames = ["subject_name"])])
 class SubjectEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

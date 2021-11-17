@@ -2,12 +2,16 @@ package ru.boringowl.schedule.service
 
 import ru.boringowl.schedule.service.TutorEntityService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Example
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import ru.boringowl.schedule.entities.GroupTableEntity
+import ru.boringowl.schedule.repo.CampusEntityRepository
+import ru.boringowl.schedule.repo.DepartmentEntityRepository
 import ru.boringowl.schedule.repo.GroupTableEntityRepository
+import ru.boringowl.schedule.repo.SpecialityEntityRepository
 
 import java.util.*
 
@@ -15,7 +19,30 @@ import java.util.*
 class GroupTableEntityServiceImpl : GroupTableEntityService {
     @Autowired
     private val grouptableentityRepository: GroupTableEntityRepository? = null
+    @Autowired
+    private val campusEntityRepository: CampusEntityRepository? = null
+    @Autowired
+    private val departmentEntityRepository: DepartmentEntityRepository? = null
+    @Autowired
+    private val specialityEntityRepository: SpecialityEntityRepository? = null
     override fun save(grouptableentity: GroupTableEntity): GroupTableEntity {
+        val campus = campusEntityRepository!!.findByCampusName(grouptableentity.department?.campus?.campusName!!)
+        if (campus.isPresent) {
+            grouptableentity.department?.campus?.campusId = campus.get().campusId
+        }
+        val speciality = specialityEntityRepository!!.findSpecialityEntityBySpecialityName(
+            grouptableentity.speciality?.specialityName!!
+        )
+        if (speciality.isPresent) {
+            grouptableentity.speciality!!.specialityId = speciality.get().specialityId
+        }
+
+        val department = departmentEntityRepository!!.findDepartmentEntityByDepartmentName(
+            grouptableentity.department?.departmentName!!
+        )
+        if (department.isPresent) {
+            grouptableentity.department!!.departmentId = department.get().departmentId
+        }
         return grouptableentityRepository!!.save(grouptableentity)
     }
 

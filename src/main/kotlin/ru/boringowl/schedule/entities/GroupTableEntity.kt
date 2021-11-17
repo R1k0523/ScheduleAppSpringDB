@@ -10,11 +10,11 @@ class GroupTableEntity {
     var groupNumber: String? = null
 
 
-    @OneToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.MERGE])
     var speciality: SpecialityEntity? = null
 
     
-    @OneToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.MERGE])
     var department: DepartmentEntity? = null
 }
 

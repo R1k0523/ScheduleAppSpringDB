@@ -16,6 +16,16 @@ class SubjectEntityServiceImpl : SubjectEntityService {
     @Autowired
     private val subjectentityRepository: SubjectEntityRepository? = null
     override fun save(subjectentity: SubjectEntity): SubjectEntity {
+        val subject = subjectentity.subjectName?.let {
+            subjectentityRepository!!.findSubjectEntityBySubjectName(
+                it
+            )
+        }
+        if (subject != null) {
+            if (subject.isPresent) {
+                subjectentity.subjectId = subject.get().subjectId
+            }
+        }
         return subjectentityRepository!!.save(subjectentity)
     }
 

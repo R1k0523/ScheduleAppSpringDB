@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import ru.boringowl.schedule.entities.UserRoleEntity
+import ru.boringowl.schedule.repo.CredentialEntityRepository
 import ru.boringowl.schedule.repo.UserRoleEntityRepository
 
 import java.util.*
@@ -15,7 +16,18 @@ import java.util.*
 class UserRoleEntityServiceImpl : UserRoleEntityService {
     @Autowired
     private val userroleentityRepository: UserRoleEntityRepository? = null
+    @Autowired
+    private val credentialEntityRepository: CredentialEntityRepository? = null
     override fun save(userroleentity: UserRoleEntity): UserRoleEntity {
+        userroleentity.credentials?.forEach {
+            val cred =
+                credentialEntityRepository!!.findCredentialEntityByCredentialName(
+                    it.credentialName!!
+                )
+            if (cred.isPresent) {
+                it.credentialId = cred.get().credentialId
+            }
+        }
         return userroleentityRepository!!.save(userroleentity)
     }
 

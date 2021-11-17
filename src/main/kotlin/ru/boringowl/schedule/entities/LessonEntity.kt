@@ -12,14 +12,14 @@ class LessonEntity {
     var lessonId: Long? = null
 
     
-    @Column(name = "lesson_type", nullable = false)
+    @Column(name = "lesson_type")
     var lessonType: String? = null
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.MERGE])
     var subject: SubjectEntity? = null
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.MERGE])
     var classroom: ClassroomEntity? = null
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @ManyToOne(cascade = [CascadeType.MERGE])
     var tutor: TutorEntity? = null
     @ManyToOne(cascade = [CascadeType.MERGE])
     var group: GroupTableEntity? = null
