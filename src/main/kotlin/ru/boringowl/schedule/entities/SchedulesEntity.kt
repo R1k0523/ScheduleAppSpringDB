@@ -41,21 +41,21 @@ class FullScheduleModel(
         fullLessons!!.forEach {
             if (it.interval?.intervalId?.week == 0) {
                 when(it.interval?.intervalId?.weekDay) {
-                    0 -> evenWeek.mon.add(it)
-                    1 -> evenWeek.tue.add(it)
-                    2 -> evenWeek.wed.add(it)
-                    3 -> evenWeek.thu.add(it)
-                    4 -> evenWeek.fri.add(it)
-                    5 -> evenWeek.sat.add(it)
+                    0 -> evenWeekLessons.mon.add(it)
+                    1 -> evenWeekLessons.tue.add(it)
+                    2 -> evenWeekLessons.wed.add(it)
+                    3 -> evenWeekLessons.thu.add(it)
+                    4 -> evenWeekLessons.fri.add(it)
+                    5 -> evenWeekLessons.sat.add(it)
                 }
             } else {
                 when(it.interval?.intervalId?.weekDay) {
-                    0 -> oddWeek.mon.add(it)
-                    1 -> oddWeek.tue.add(it)
-                    2 -> oddWeek.wed.add(it)
-                    3 -> oddWeek.thu.add(it)
-                    4 -> oddWeek.fri.add(it)
-                    5 -> oddWeek.sat.add(it)
+                    0 -> oddWeekLessons.mon.add(it)
+                    1 -> oddWeekLessons.tue.add(it)
+                    2 -> oddWeekLessons.wed.add(it)
+                    3 -> oddWeekLessons.thu.add(it)
+                    4 -> oddWeekLessons.fri.add(it)
+                    5 -> oddWeekLessons.sat.add(it)
                 }
             }
         }
