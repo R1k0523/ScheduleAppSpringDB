@@ -35,15 +35,38 @@ class FullScheduleModel(
     var schedulesName: String? = null,
     fullLessons: List<LessonEntity>? = null
 ) {
-    var oddWeekLessons: ArrayList<LessonEntity> = arrayListOf()
-    var evenWeekLessons: ArrayList<LessonEntity> = arrayListOf()
+    var oddWeekLessons: Week = Week()
+    var evenWeekLessons: Week = Week()
     init {
         fullLessons!!.forEach {
             if (it.interval?.intervalId?.week == 0) {
-                evenWeekLessons.add(it)
+                when(it.interval?.intervalId?.weekDay) {
+                    0 -> evenWeek.mon.add(it)
+                    1 -> evenWeek.tue.add(it)
+                    2 -> evenWeek.wed.add(it)
+                    3 -> evenWeek.thu.add(it)
+                    4 -> evenWeek.fri.add(it)
+                    5 -> evenWeek.sat.add(it)
+                }
             } else {
-                oddWeekLessons.add(it)
+                when(it.interval?.intervalId?.weekDay) {
+                    0 -> oddWeek.mon.add(it)
+                    1 -> oddWeek.tue.add(it)
+                    2 -> oddWeek.wed.add(it)
+                    3 -> oddWeek.thu.add(it)
+                    4 -> oddWeek.fri.add(it)
+                    5 -> oddWeek.sat.add(it)
+                }
             }
         }
     }
 }
+
+class Week(
+    var mon: ArrayList<LessonEntity> = arrayListOf(),
+    var tue: ArrayList<LessonEntity> = arrayListOf(),
+    var wed: ArrayList<LessonEntity> = arrayListOf(),
+    var thu: ArrayList<LessonEntity> = arrayListOf(),
+    var fri: ArrayList<LessonEntity> = arrayListOf(),
+    var sat: ArrayList<LessonEntity> = arrayListOf()
+)
