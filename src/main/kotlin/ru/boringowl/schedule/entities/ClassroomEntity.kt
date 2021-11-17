@@ -6,6 +6,7 @@ import javax.persistence.*
 @Table(name = "classroom")
 class ClassroomEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "classroom_id", nullable = false)
     var classroomId: Long? = null
 
@@ -15,7 +16,7 @@ class ClassroomEntity {
     @Column(name = "classroom_size", nullable = false)
     var classroomSize: Int? = null
 
-    @ManyToMany()
+    @ManyToMany(cascade = [CascadeType.ALL])
     var equips: List<EquipmentEntity>? = null
 }
 

@@ -6,6 +6,7 @@ import javax.persistence.*
 @Table(name = "equipment")
 class EquipmentEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "equipment_id", nullable = false)
     var equipmentId: Long = -1
 

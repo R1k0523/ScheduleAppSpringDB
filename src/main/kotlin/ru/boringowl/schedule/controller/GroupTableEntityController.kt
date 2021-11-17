@@ -17,7 +17,7 @@ class GroupTableEntityController {
     }
 
     @GetMapping("/group/{id}")
-    fun getById(@PathVariable(value = "id") id: Long?): Optional<GroupTableEntity?> {
+    fun getById(@PathVariable(value = "id") id: String?): Optional<GroupTableEntity?> {
         return grouptableentityService!!.find(id!!)
     }
 
@@ -26,7 +26,7 @@ class GroupTableEntityController {
         get() = grouptableentityService!!.findAll()
 
     @DeleteMapping("/group/{id}")
-    fun deleteById(@PathVariable(value = "id") id: Long?) {
+    fun deleteById(@PathVariable(value = "id") id: String?) {
         grouptableentityService!!.delete(id!!)
     }
 

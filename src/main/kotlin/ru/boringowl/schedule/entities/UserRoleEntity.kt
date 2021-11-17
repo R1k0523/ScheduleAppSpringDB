@@ -7,13 +7,14 @@ import javax.persistence.*
 @Table(name = "userrole")
 class UserRoleEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userrole_id", nullable = false)
     var userRoleId: Long? = null
 
     @Column(name = "userrole_name", nullable = false)
     var userRoleName: String? = null
 
-    @ManyToMany
+    @ManyToMany(cascade = [CascadeType.ALL])
     var credentials: List<CredentialEntity>? = null
 }
 

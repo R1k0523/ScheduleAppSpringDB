@@ -6,6 +6,7 @@ import javax.persistence.*
 @Table(name = "credential")
 class CredentialEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "credential_id", nullable = false)
     var credentialId: Long? = null
 

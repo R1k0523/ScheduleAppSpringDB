@@ -19,7 +19,7 @@ class GroupTableEntityServiceImpl : GroupTableEntityService {
         return grouptableentityRepository!!.save(grouptableentity)
     }
 
-    override fun find(id: Long): Optional<GroupTableEntity?> {
+    override fun find(id: String): Optional<GroupTableEntity?> {
         return grouptableentityRepository!!.findById(id)
     }
 
@@ -35,7 +35,7 @@ class GroupTableEntityServiceImpl : GroupTableEntityService {
         return grouptableentityRepository!!.findAll(pageable!!)
     }
 
-    override fun delete(id: Long) {
+    override fun delete(id: String) {
         grouptableentityRepository!!.deleteById(id)
     }
 

@@ -11,11 +11,11 @@ import java.util.*
 
 interface GroupTableEntityService {
     fun save(grouptableentity: GroupTableEntity): GroupTableEntity
-    fun find(id: Long): Optional<GroupTableEntity?>
+    fun find(id: String): Optional<GroupTableEntity?>
     fun findAll(): List<GroupTableEntity?>
     fun findAll(sort: Sort?): List<GroupTableEntity?>
     fun findAll(pageable: Pageable?): Page<GroupTableEntity?>
-    fun delete(id: Long)
+    fun delete(id: String)
     fun delete(grouptableentity: GroupTableEntity)
     fun deleteAll()
     fun count(): Long

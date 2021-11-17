@@ -7,6 +7,7 @@ import javax.persistence.*
 @Table(name = "lesson")
 class LessonEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "lesson_id", nullable = false)
     var lessonId: Long? = null
 
@@ -14,17 +15,15 @@ class LessonEntity {
     @Column(name = "lesson_type", nullable = false)
     var lessonType: String? = null
 
-    @OneToOne(cascade = [CascadeType.MERGE])
+    @ManyToOne(cascade = [CascadeType.ALL])
     var subject: SubjectEntity? = null
-    @OneToOne(cascade = [CascadeType.MERGE])
+    @ManyToOne(cascade = [CascadeType.ALL])
     var classroom: ClassroomEntity? = null
-    @OneToOne(cascade = [CascadeType.MERGE])
+    @ManyToOne(cascade = [CascadeType.ALL])
     var tutor: TutorEntity? = null
-    @OneToOne(cascade = [CascadeType.MERGE])
+    @ManyToOne(cascade = [CascadeType.MERGE])
     var group: GroupTableEntity? = null
-    @OneToOne(cascade = [CascadeType.MERGE])
-    var lesson: LessonEntity? = null
-    @OneToOne(cascade = [CascadeType.MERGE])
+    @ManyToOne(cascade = [CascadeType.MERGE])
     var interval: IntervalTableEntity? = null
 }
 
