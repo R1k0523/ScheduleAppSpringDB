@@ -4,10 +4,14 @@ import java.io.Serializable
 import javax.persistence.*
 
 @Entity
-@Table(name = "interval_table", uniqueConstraints=[UniqueConstraint(columnNames = ["lesson_number", "week_day", "week"])]
+@Table(name = "interval_table",
+    uniqueConstraints=[
+        UniqueConstraint(columnNames = ["lesson_number", "week_day", "week"])
+    ]
 )
 class IntervalTableEntity : Serializable {
     @EmbeddedId
+    @Column(name = "interval_id", nullable = false)
     var intervalId: IntervalId? = null
 }
 

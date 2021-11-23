@@ -25,25 +25,36 @@ class GroupTableEntityServiceImpl : GroupTableEntityService {
     private val departmentEntityRepository: DepartmentEntityRepository? = null
     @Autowired
     private val specialityEntityRepository: SpecialityEntityRepository? = null
-    override fun save(grouptableentity: GroupTableEntity): GroupTableEntity {
-        val campus = campusEntityRepository!!.findByCampusName(grouptableentity.department?.campus?.campusName!!)
-        if (campus.isPresent) {
-            grouptableentity.department?.campus?.campusId = campus.get().campusId
+    override fun save(grouptableenties: List<GroupTableEntity>): List<GroupTableEntity> {
+        val response = arrayListOf<GroupTableEntity>()
+        grouptableenties.forEach {
+            response.add(save(it))
         }
-        val speciality = specialityEntityRepository!!.findSpecialityEntityBySpecialityName(
-            grouptableentity.speciality?.specialityName!!
-        )
+        return response
+    }
+
+    override fun save(grouptableenty: GroupTableEntity): GroupTableEntity {
+        val campus =
+            campusEntityRepository!!.findByCampusName(grouptableenty.department?.campus?.campusName!!)
+        if (campus.isPresent) {
+            grouptableenty.department?.campus?.campusId = campus.get().campusId
+        }
+        val speciality =
+            specialityEntityRepository!!.findSpecialityEntityBySpecialityName(
+                grouptableenty.speciality?.specialityName!!
+            )
         if (speciality.isPresent) {
-            grouptableentity.speciality!!.specialityId = speciality.get().specialityId
+            grouptableenty.speciality!!.specialityId = speciality.get().specialityId
         }
 
-        val department = departmentEntityRepository!!.findDepartmentEntityByDepartmentName(
-            grouptableentity.department?.departmentName!!
-        )
+        val department =
+            departmentEntityRepository!!.findDepartmentEntityByDepartmentName(
+                grouptableenty.department?.departmentName!!
+            )
         if (department.isPresent) {
-            grouptableentity.department!!.departmentId = department.get().departmentId
+            grouptableenty.department!!.departmentId = department.get().departmentId
         }
-        return grouptableentityRepository!!.save(grouptableentity)
+        return grouptableentityRepository!!.save(grouptableenty)
     }
 
     override fun find(id: String): Optional<GroupTableEntity?> {

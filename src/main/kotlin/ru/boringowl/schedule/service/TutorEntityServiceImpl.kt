@@ -6,10 +6,10 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
+import ru.boringowl.schedule.entities.ScheduleUtils
 import ru.boringowl.schedule.entities.TutorEntity
-import ru.boringowl.schedule.repo.DepartmentEntityRepository
-import ru.boringowl.schedule.repo.PositionsEntityRepository
-import ru.boringowl.schedule.repo.TutorEntityRepository
+import ru.boringowl.schedule.entities.Week
+import ru.boringowl.schedule.repo.*
 
 import java.util.*
 
@@ -19,6 +19,8 @@ class TutorEntityServiceImpl : TutorEntityService {
     private val tutorentityRepository: TutorEntityRepository? = null
     @Autowired
     private val departmentEntityRepository: DepartmentEntityRepository? = null
+    @Autowired
+    private val lessonsEntityRepository: LessonEntityRepository? = null
     @Autowired
     private val positionsEntityServiceImpl: PositionsEntityServiceImpl? = null
     override fun save(tutorentity: TutorEntity): TutorEntity {
@@ -50,6 +52,17 @@ class TutorEntityServiceImpl : TutorEntityService {
 
     override fun find(id: Long): Optional<TutorEntity?> {
         return tutorentityRepository!!.findById(id)
+    }
+    override fun findTutors(tutorsName: String): List<TutorEntity?> {
+        return tutorentityRepository!!.findTutorsEntityByFullNameContains(tutorsName)
+    }
+    override fun find(tutorsName: String): Week {
+        val tutor = tutorentityRepository!!.findFirstTutorEntityByFullNameContains(tutorsName)
+        if (tutor.isEmpty)
+            return Week()
+
+        val lessons = lessonsEntityRepository!!.findByTutor(tutor.get())
+        return ScheduleUtils.lessonsToWeeks(lessons, false).first
     }
 
     override fun findAll(): List<TutorEntity?> {

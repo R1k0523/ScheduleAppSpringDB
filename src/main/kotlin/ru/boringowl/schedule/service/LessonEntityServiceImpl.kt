@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
+import ru.boringowl.schedule.entities.GroupTableEntity
 import ru.boringowl.schedule.entities.LessonEntity
 import ru.boringowl.schedule.repo.LessonEntityRepository
 
@@ -27,12 +28,29 @@ class LessonEntityServiceImpl : LessonEntityService {
     private val intervalTableEntityServiceImpl: IntervalTableEntityServiceImpl? = null
 
     override fun save(lessonentity: LessonEntity): LessonEntity {
-        lessonentity.group = groupTableEntityService!!.save(lessonentity.group!!)
+        lessonentity.interval = intervalTableEntityServiceImpl!!.save(lessonentity.interval!!)
         lessonentity.tutor = tutorEntityServiceImpl!!.save(lessonentity.tutor!!)
         lessonentity.subject = subjectEntityServiceImpl!!.save(lessonentity.subject!!)
+        lessonentity.groups = groupTableEntityService!!.save(lessonentity.groups!!)
         lessonentity.classroom = classroomEntityServiceImpl!!.save(lessonentity.classroom!!)
-        lessonentity.interval = intervalTableEntityServiceImpl!!.save(lessonentity.interval!!)
-        return lessonentityRepository!!.save(lessonentity)
+        val lessonOpt = lessonentityRepository!!.findFirstByIntervalAndTutorAndSubject(
+                lessonentity.interval!!,
+                lessonentity.tutor!!,
+                lessonentity.subject!!
+        )
+        if (lessonOpt.isPresent) {
+            val lesson = lessonOpt.get()
+            val groups = arrayListOf<GroupTableEntity>()
+            groups.addAll(lessonentity.groups!!)
+            lessonentity.lessonId = lesson.lessonId
+            lesson.groups!!.forEach {
+                if (!lessonentity.groups!!.contains(it)) {
+                    groups.add(it)
+                }
+            }
+            lessonentity.groups = groups
+        }
+        return lessonentityRepository.save(lessonentity)
     }
 
     override fun find(id: Long): Optional<LessonEntity?> {

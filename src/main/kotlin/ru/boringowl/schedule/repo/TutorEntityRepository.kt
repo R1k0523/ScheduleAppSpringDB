@@ -6,4 +6,6 @@ import java.util.*
 
 interface TutorEntityRepository : JpaRepository<TutorEntity?, Long?> {
     fun findTutorEntityByFullName(name: String): Optional<TutorEntity>
+    fun findFirstTutorEntityByFullNameContains(namePart: String): Optional<TutorEntity>
+    fun findTutorsEntityByFullNameContains(namePart: String): List<TutorEntity>
 }

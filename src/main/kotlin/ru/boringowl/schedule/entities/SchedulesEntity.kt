@@ -17,7 +17,7 @@ class SchedulesEntity {
     @OneToOne(cascade = [CascadeType.MERGE])
     var user: UsersEntity? = null
 
-    @OneToMany(cascade = [CascadeType.MERGE])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     var lessons: List<LessonEntity>? = null
 
     fun toModel():ShortScheduleModel = ShortScheduleModel(schedulesId, schedulesName, lessons!!.size)
@@ -38,26 +38,10 @@ class FullScheduleModel(
     var oddWeekLessons: Week = Week()
     var evenWeekLessons: Week = Week()
     init {
-        fullLessons!!.forEach {
-            if (it.interval?.intervalId?.week == 0) {
-                when(it.interval?.intervalId?.weekDay) {
-                    0 -> evenWeekLessons.mon.add(it)
-                    1 -> evenWeekLessons.tue.add(it)
-                    2 -> evenWeekLessons.wed.add(it)
-                    3 -> evenWeekLessons.thu.add(it)
-                    4 -> evenWeekLessons.fri.add(it)
-                    5 -> evenWeekLessons.sat.add(it)
-                }
-            } else {
-                when(it.interval?.intervalId?.weekDay) {
-                    0 -> oddWeekLessons.mon.add(it)
-                    1 -> oddWeekLessons.tue.add(it)
-                    2 -> oddWeekLessons.wed.add(it)
-                    3 -> oddWeekLessons.thu.add(it)
-                    4 -> oddWeekLessons.fri.add(it)
-                    5 -> oddWeekLessons.sat.add(it)
-                }
-            }
+        if (fullLessons != null) {
+            val weeks = ScheduleUtils.lessonsToWeeks(fullLessons)
+            evenWeekLessons = weeks.first
+            oddWeekLessons = weeks.second
         }
     }
 }
@@ -70,3 +54,32 @@ class Week(
     var fri: ArrayList<LessonEntity> = arrayListOf(),
     var sat: ArrayList<LessonEntity> = arrayListOf()
 )
+
+object ScheduleUtils {
+    fun lessonsToWeeks(lessons : List<LessonEntity>, isTwoWeeks: Boolean = true): Pair<Week, Week> {
+        val odd = Week()
+        val even = Week()
+        lessons.forEach {
+            if (it.interval?.intervalId?.week == 0 || !isTwoWeeks) {
+                when(it.interval?.intervalId?.weekDay) {
+                    0 -> even.mon.add(it)
+                    1 -> even.tue.add(it)
+                    2 -> even.wed.add(it)
+                    3 -> even.thu.add(it)
+                    4 -> even.fri.add(it)
+                    5 -> even.sat.add(it)
+                }
+            } else {
+                when(it.interval?.intervalId?.weekDay) {
+                    0 -> odd.mon.add(it)
+                    1 -> odd.tue.add(it)
+                    2 -> odd.wed.add(it)
+                    3 -> odd.thu.add(it)
+                    4 -> odd.fri.add(it)
+                    5 -> odd.sat.add(it)
+                }
+            }
+        }
+        return Pair(even, odd)
+    }
+}

@@ -2,7 +2,9 @@ package ru.boringowl.schedule.controller
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import ru.boringowl.schedule.entities.FullScheduleModel
 import ru.boringowl.schedule.entities.TutorEntity
+import ru.boringowl.schedule.entities.Week
 import ru.boringowl.schedule.service.TutorEntityService
 import java.util.*
 
@@ -38,5 +40,16 @@ class TutorEntityController {
     @GetMapping("/tutor/count")
     fun count(): Long {
         return tutorentityService!!.count()
+    }
+
+
+    @GetMapping("/tutor/schedule")
+    fun tutorschedule(@RequestParam tutorsName: String): Week {
+        return tutorentityService!!.find(tutorsName)
+    }
+
+    @GetMapping("/tutor/search")
+    fun tutorsList(@RequestParam tutorsName: String): List<TutorEntity?> {
+        return tutorentityService!!.findTutors(tutorsName)
     }
 }

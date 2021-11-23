@@ -10,7 +10,8 @@ import ru.boringowl.schedule.entities.GroupTableEntity
 import java.util.*
 
 interface GroupTableEntityService {
-    fun save(grouptableentity: GroupTableEntity): GroupTableEntity
+    fun save(grouptableenties: List<GroupTableEntity>): List<GroupTableEntity>
+    fun save(grouptableenty: GroupTableEntity): GroupTableEntity
     fun find(id: String): Optional<GroupTableEntity?>
     fun findAll(): List<GroupTableEntity?>
     fun findAll(sort: Sort?): List<GroupTableEntity?>
