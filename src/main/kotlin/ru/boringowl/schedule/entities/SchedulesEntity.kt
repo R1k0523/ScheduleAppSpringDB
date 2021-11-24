@@ -53,7 +53,17 @@ class Week(
     var thu: ArrayList<LessonEntity> = arrayListOf(),
     var fri: ArrayList<LessonEntity> = arrayListOf(),
     var sat: ArrayList<LessonEntity> = arrayListOf()
-)
+) {
+
+    fun sort() {
+        mon.sortWith(compareBy {it.interval!!.intervalId!!.lessonNumber})
+        tue.sortWith(compareBy {it.interval!!.intervalId!!.lessonNumber})
+        wed.sortWith(compareBy {it.interval!!.intervalId!!.lessonNumber})
+        thu.sortWith(compareBy {it.interval!!.intervalId!!.lessonNumber})
+        fri.sortWith(compareBy {it.interval!!.intervalId!!.lessonNumber})
+        sat.sortWith(compareBy {it.interval!!.intervalId!!.lessonNumber})
+    }
+}
 
 object ScheduleUtils {
     fun lessonsToWeeks(lessons : List<LessonEntity>, isTwoWeeks: Boolean = true): Pair<Week, Week> {
@@ -80,6 +90,9 @@ object ScheduleUtils {
                 }
             }
         }
+        odd.sort()
+        even.sort()
         return Pair(even, odd)
     }
+
 }
